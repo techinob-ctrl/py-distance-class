@@ -5,6 +5,7 @@ from typing import Union
 
 
 Number = Union[int, float]
+DistanceLike = Union[Number, "Distance"]
 
 
 class Distance:
@@ -17,13 +18,15 @@ class Distance:
     def __repr__(self) -> str:
         return f"Distance(km={self.km})"
 
-    def __add__(self, other: Union[Number, "Distance"]) -> Union["Distance", NotImplementedType]:
+    def __add__(
+        self, other: DistanceLike
+    ) -> Union["Distance", NotImplementedType]:
         other_km = self._extract_km(other)
         if other_km is NotImplemented:
             return NotImplemented
         return Distance(self.km + other_km)
 
-    def __iadd__(self, other: Union[Number, "Distance"]) -> "Distance":
+    def __iadd__(self, other: DistanceLike) -> "Distance":
         other_km = self._extract_km(other)
         if other_km is NotImplemented:
             return NotImplemented
@@ -35,18 +38,24 @@ class Distance:
             return Distance(self.km * other)
         return NotImplemented
 
-    def __truediv__(self, other: Number) -> Union["Distance", NotImplementedType]:
+    def __truediv__(
+        self, other: Number
+    ) -> Union["Distance", NotImplementedType]:
         if isinstance(other, (int, float)):
             return Distance(round(self.km / other, 2))
         return NotImplemented
 
-    def __lt__(self, other: Union[Number, "Distance"]) -> Union[bool, NotImplementedType]:
+    def __lt__(
+        self, other: DistanceLike
+    ) -> Union[bool, NotImplementedType]:
         other_km = self._extract_km(other)
         if other_km is NotImplemented:
             return NotImplemented
         return self.km < other_km
 
-    def __gt__(self, other: Union[Number, "Distance"]) -> Union[bool, NotImplementedType]:
+    def __gt__(
+        self, other: DistanceLike
+    ) -> Union[bool, NotImplementedType]:
         other_km = self._extract_km(other)
         if other_km is NotImplemented:
             return NotImplemented
@@ -58,13 +67,17 @@ class Distance:
             return NotImplemented
         return self.km == other_km
 
-    def __le__(self, other: Union[Number, "Distance"]) -> Union[bool, NotImplementedType]:
+    def __le__(
+        self, other: DistanceLike
+    ) -> Union[bool, NotImplementedType]:
         other_km = self._extract_km(other)
         if other_km is NotImplemented:
             return NotImplemented
         return self.km <= other_km
 
-    def __ge__(self, other: Union[Number, "Distance"]) -> Union[bool, NotImplementedType]:
+    def __ge__(
+        self, other: DistanceLike
+    ) -> Union[bool, NotImplementedType]:
         other_km = self._extract_km(other)
         if other_km is NotImplemented:
             return NotImplemented
